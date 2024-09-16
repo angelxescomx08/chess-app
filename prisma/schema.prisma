@@ -14,18 +14,6 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    createdBy   User   @relation(fields: [createdById], references: [id])
-    createdById String
-
-    @@index([name])
-}
-
 // Necessary for Next auth
 model Account {
     id                       String  @id @default(cuid())
@@ -62,7 +50,12 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
-    posts         Post[]
+
+    elo Int @default(1200)
+
+    whiteGames Game[] @relation("WhiteGames")
+    blackGames Game[] @relation("BlackGames")
+    wonGemes   Game[]
 }
 
 model VerificationToken {
@@ -71,4 +64,17 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model Game {
+    id        String   @id @default(cuid())
+    points    Int      @default(0)
+    white     User     @relation("WhiteGames", fields: [whiteId], references: [id])
+    whiteId   String
+    black     User     @relation("BlackGames", fields: [blackId], references: [id])
+    blackId   String
+    winner    User?    @relation(fields: [winnerId], references: [id]) // Relación con el usuario ganador
+    winnerId  String?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
