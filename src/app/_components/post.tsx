@@ -5,28 +5,28 @@ import { useState } from "react";
 import { api } from "~/trpc/react";
 
 export function LatestPost() {
-  const [latestPost] = api.post.getLatest.useSuspenseQuery();
+  //const [latestPost] = api.post.getLatest.useSuspenseQuery();
 
-  const utils = api.useUtils();
-  const [name, setName] = useState("");
-  const createPost = api.post.create.useMutation({
-    onSuccess: async () => {
-      await utils.post.invalidate();
-      setName("");
-    },
-  });
+  // const utils = api.useUtils();
+  // const [name, setName] = useState("");
+  // const createPost = api.post.create.useMutation({
+  //   onSuccess: async () => {
+  //     await utils.post.invalidate();
+  //     setName("");
+  //   },
+  // });
 
   return (
     <div className="w-full max-w-xs">
-      {latestPost ? (
+      {/* {latestPost ? (
         <p className="truncate">Your most recent post: {latestPost.name}</p>
       ) : (
         <p>You have no posts yet.</p>
-      )}
-      <form
+      )} */}
+      {/* <form
         onSubmit={(e) => {
           e.preventDefault();
-          createPost.mutate({ name });
+          // createPost.mutate({ name });
         }}
         className="flex flex-col gap-2"
       >
@@ -44,7 +44,7 @@ export function LatestPost() {
         >
           {createPost.isPending ? "Submitting..." : "Submit"}
         </button>
-      </form>
+      </form> */}
     </div>
   );
 }
