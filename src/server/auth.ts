@@ -38,6 +38,9 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
+    redirect: async ({ baseUrl }) => {
+      return `${baseUrl}/home`
+    },
     session: ({ session, user }) => ({
       ...session,
       user: {
