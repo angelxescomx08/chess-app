@@ -12,7 +12,7 @@ type Props = {
 
 export const Square = ({ square }: Props) => {
   const { isOver, setNodeRef } = useDroppable({
-    id: `square-${square.file}${square.rank}`,
+    id: `square-${square.file}-${square.rank}`,
   });
   const style = {
     color: isOver ? "green" : undefined,
@@ -29,7 +29,7 @@ export const Square = ({ square }: Props) => {
     >
       {/* {square.file}
           {square.rank + 1} */}
-      {square.piece && <Piece piece={square.piece} id={crypto.randomUUID()} />}
+      {square.piece && <Piece piece={square.piece} />}
     </div>
   );
 };

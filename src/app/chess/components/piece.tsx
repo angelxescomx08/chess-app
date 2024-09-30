@@ -4,17 +4,17 @@ import type * as chess from "chess";
 import { useDraggable } from "@dnd-kit/core";
 
 type Props = {
-  id: string;
   piece: chess.Piece;
 };
 
-export const Piece = ({ piece, id }: Props) => {
+export const Piece = ({ piece }: Props) => {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: `piece-${piece.side.name}-${piece.type}-${id}`,
+    id: `piece-${piece.side.name}-${piece.type}-${crypto.randomUUID()}`,
   });
   const style = transform
     ? {
         transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+        zIndex: 200
       }
     : undefined;
   return (
