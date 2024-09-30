@@ -4,14 +4,16 @@ import Image from "next/image";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import type * as chess from "chess";
+import { useState } from "react";
 
 interface PieceProps {
   piece: chess.Piece;
 }
 
 export const Piece: React.FC<PieceProps> = ({ piece }) => {
+  const [id] = useState(() => `piece-${crypto.randomUUID()}`);
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: `piece-${piece.side.name}-${piece.type}`, // ID único de la pieza
+    id: id, // ID único de la pieza
   });
 
   const style: React.CSSProperties = transform
@@ -24,7 +26,7 @@ export const Piece: React.FC<PieceProps> = ({ piece }) => {
     <div
       ref={setNodeRef}
       style={style}
-      className="relative w-full h-full"
+      className="relative h-full w-full"
       {...listeners}
       {...attributes}
     >

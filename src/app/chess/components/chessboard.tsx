@@ -14,7 +14,7 @@ export const ChessBoard = () => {
     if (over) {
       const from = active.id.split("-")[1]; // Casilla de origen
       const to = over.id.split("-")[1]; // Casilla de destino
-      move(`${to}`); // Mueve la pieza en el backend
+      //move(`${to}`); // Mueve la pieza en el backend
       console.log(`Pieza ${active.id} movida de ${from} a ${to}`);
     }
   };
