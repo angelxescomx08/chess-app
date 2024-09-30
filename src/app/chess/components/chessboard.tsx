@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { gameClient, getSquareColor } from "../utils";
+import Image from "next/image";
 
 export const ChessBoard = () => {
   return (
@@ -20,14 +21,21 @@ export const ChessBoard = () => {
           <div
             key={`square-${index}`}
             className={clsx({
-              "col-span-1 aspect-square": true,
+              "col-span-1 aspect-square relative": true,
               "bg-white text-black": getSquareColor(square) === "light",
               "bg-black": getSquareColor(square) === "dark",
             })}
           >
             {square.file}
             {square.rank + 1}
-            {square.piece?.type}
+            {
+              square.piece&&
+                <Image 
+                  src={`/pieces/${square.piece.side.name}/${square.piece.type}.png`} 
+                  alt={square.piece.type}
+                  fill
+                />
+            }
           </div>
         ))}
     </div>
