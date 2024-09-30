@@ -1,46 +1,37 @@
-import clsx from "clsx";
-import { gameClient, getSquareColor } from "../utils";
-import Image from "next/image";
+"use client"
+
+import { DragDropContext } from "react-beautiful-dnd";
+import { gameClient } from "../utils";
+import { Square } from "./square";
 
 export const ChessBoard = () => {
   return (
     <div className="grid w-[600px] max-w-full grid-cols-8">
-      {gameClient
-        .getStatus()
-        .board.squares.reverse()
-        .map((square, index) => {
-          const file = String.fromCharCode("a".charCodeAt(0) + (index % 8)); // 'a' a 'h'
-          const rank = Math.floor(index / 8) + 1; // Rango 1 a 8
-          return {
-            ...square,
-            file,
-            rank: 8 - rank, // Cambiar el rango para que empiece desde 8 hasta 1
-          };
-        })
-        .map((square, index) => (
-          <div
-            key={`square-${index}`}
-            className={clsx({
-              "col-span-1 aspect-square relative": true,
-              "bg-white text-black": getSquareColor(square) === "light",
-              "bg-black": getSquareColor(square) === "dark",
-            })}
-          >
-            {square.file}
-            {square.rank + 1}
-            {
-              square.piece&&
-                <Image 
-                  style={{
-                    filter: 'drop-shadow(0 0 0.3rem #fff)',
-                  }}
-                  src={`/pieces/${square.piece.side.name}/${square.piece.type}.png`} 
-                  alt={square.piece.type}
-                  fill
-                />
-            }
-          </div>
-        ))}
+      <DragDropContext onDragEnd={(result)=>{
+          const { source, destination } = result;
+    
+          // Si no hay destino (fuera del tablero), no hacer nada
+          if (!destination) return;
+        
+          // Si el origen y el destino son iguales, no hacer nada
+          if (source.index === destination.index) return;
+        }}>
+        {gameClient
+          .getStatus()
+          .board.squares.reverse()
+          .map((square, index) => {
+            const file = String.fromCharCode("a".charCodeAt(0) + (index % 8));
+            const rank = Math.floor(index / 8) + 1;
+            return {
+              ...square,
+              file,
+              rank: 8 - rank,
+            };
+          })
+          .map((square, index) => (
+            <Square key={`square-${index}`} index={index} square={square} />
+          ))}
+      </DragDropContext>
     </div>
   );
 };

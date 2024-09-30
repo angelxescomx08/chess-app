@@ -1,4 +1,3 @@
-import React from "react";
 import { ChessBoard } from "../chess/components/chessboard";
 
 const HomePage = () => {
