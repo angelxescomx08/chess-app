@@ -1,21 +1,13 @@
-"use client"
+"use client";
 
-import { DragDropContext } from "react-beautiful-dnd";
 import { gameClient } from "../utils";
 import { Square } from "./square";
+import { DndContext } from "@dnd-kit/core";
 
 export const ChessBoard = () => {
   return (
-    <div className="grid w-[600px] max-w-full grid-cols-8">
-      <DragDropContext onDragEnd={(result)=>{
-          const { source, destination } = result;
-    
-          // Si no hay destino (fuera del tablero), no hacer nada
-          if (!destination) return;
-        
-          // Si el origen y el destino son iguales, no hacer nada
-          if (source.index === destination.index) return;
-        }}>
+    <DndContext>
+      <div className="grid w-[600px] max-w-full grid-cols-8">
         {gameClient
           .getStatus()
           .board.squares.reverse()
@@ -29,9 +21,9 @@ export const ChessBoard = () => {
             };
           })
           .map((square, index) => (
-            <Square key={`square-${index}`} index={index} square={square} />
+            <Square key={`square-${index}`} square={square} />
           ))}
-      </DragDropContext>
-    </div>
+      </div>
+    </DndContext>
   );
 };
