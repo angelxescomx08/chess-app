@@ -27,6 +27,7 @@ export const ChessBoard = () => {
           >
             {square.file}
             {square.rank + 1}
+            {square.piece?.type}
           </div>
         ))}
     </div>
