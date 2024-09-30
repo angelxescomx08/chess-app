@@ -22,7 +22,7 @@ export const Square = ({ square }: Props) => {
       ref={setNodeRef}
       style={style}
       className={clsx({
-        "relative col-span-1 aspect-square": true,
+        "col-span-1 aspect-square": true,
         "bg-white text-black": getSquareColor(square) === "light",
         "bg-black": getSquareColor(square) === "dark",
       })}

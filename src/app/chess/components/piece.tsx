@@ -1,3 +1,5 @@
+"use client"
+
 import Image from "next/image";
 import clsx from "clsx";
 import type * as chess from "chess";
@@ -18,7 +20,7 @@ export const Piece = ({ piece }: Props) => {
       }
     : undefined;
   return (
-    <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
+    <div className="relative w-full h-full" ref={setNodeRef} style={style} {...listeners} {...attributes}>
       <Image
         style={{
           filter: "drop-shadow(0 0 0.3rem #fff)",
@@ -29,6 +31,7 @@ export const Piece = ({ piece }: Props) => {
         src={`/pieces/${piece.side.name}/${piece.type}.png`}
         alt={piece.type}
         fill
+        sizes="75px"
       />
     </div>
   );
