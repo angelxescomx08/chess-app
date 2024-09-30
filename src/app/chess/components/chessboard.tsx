@@ -1,36 +1,30 @@
 "use client";
 
-import { DndContext, type DragEndEvent } from "@dnd-kit/core";
 import { useStatus } from "../hooks";
 import { Square } from "./square";
 import type * as chess from "chess";
+import { DragDropContext, type DropResult } from "react-beautiful-dnd";
 
 export const ChessBoard = () => {
   const { status, move } = useStatus();
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { over, active } = event;
+  const onDragEnd = (result:DropResult)=>{
+    const { source, destination } = result;
+  
+    // Si no hay destino, salimos de la función
+    if (!destination) return;
 
-    console.log(event);
-
-    // if (over) {
-    //   const from = active.id.split("-")[1]; // Casilla de origen
-    //   const to = over.id.split("-")[1]; // Casilla de destino
-    //   console.log({
-    //     text: `Pieza ${active.id} movida de ${from} a ${to}`,
-    //     change: `${from}${to}`,
-    //   });
-    //   move(`${from}${to}`); // Mueve la pieza en el backend
-    // }
-  };
+    // Lógica para actualizar el estado del tablero de ajedrez
+    //move(source.droppableId, destination.droppableId);
+  }
 
   return (
-    <DndContext onDragEnd={handleDragEnd}>
+    <DragDropContext onDragEnd={onDragEnd}>
       <div className="grid w-[600px] max-w-full grid-cols-8">
         {status.board.squares.map((square: chess.Square, index: number) => (
           <Square key={`square-${index}`} square={square} />
         ))}
       </div>
-    </DndContext>
+    </DragDropContext>
   );
 };
