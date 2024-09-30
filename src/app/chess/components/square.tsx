@@ -12,7 +12,7 @@ interface SquareProps {
 
 export const Square: React.FC<SquareProps> = ({ square }) => {
   const { isOver, setNodeRef } = useDroppable({
-    id: `square-${square.file}${square.rank}`, // ID único de la casilla
+    id: `${square.file}${square.rank}`, // ID único de la casilla
   });
 
   const style: React.CSSProperties = {
@@ -28,6 +28,7 @@ export const Square: React.FC<SquareProps> = ({ square }) => {
         "bg-black": getSquareColor(square) === "dark",
       })}
     >
+      {`${square.file}${square.rank}`}
       {square.piece && <Piece piece={square.piece} />}
     </div>
   );

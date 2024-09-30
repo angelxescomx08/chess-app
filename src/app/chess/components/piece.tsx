@@ -5,13 +5,16 @@ import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import type * as chess from "chess";
 import { useState } from "react";
+import { getCharByPieceType } from "../utils";
 
 interface PieceProps {
   piece: chess.Piece;
 }
 
 export const Piece: React.FC<PieceProps> = ({ piece }) => {
-  const [id] = useState(() => `piece-${crypto.randomUUID()}`);
+  const [id] = useState(
+    () => `${getCharByPieceType(piece.type)}*${crypto.randomUUID()}`,
+  );
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: id, // ID único de la pieza
   });

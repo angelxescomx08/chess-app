@@ -1,5 +1,3 @@
 import * as chess from "chess";
 
-export const gameClient = chess.create({
-  PGN: true,
-});
+export const gameClient = chess.create();

@@ -11,12 +11,17 @@ export const ChessBoard = () => {
   const handleDragEnd = (event: DragEndEvent) => {
     const { over, active } = event;
 
-    if (over) {
-      const from = active.id.split("-")[1]; // Casilla de origen
-      const to = over.id.split("-")[1]; // Casilla de destino
-      //move(`${to}`); // Mueve la pieza en el backend
-      console.log(`Pieza ${active.id} movida de ${from} a ${to}`);
-    }
+    console.log(event);
+
+    // if (over) {
+    //   const from = active.id.split("-")[1]; // Casilla de origen
+    //   const to = over.id.split("-")[1]; // Casilla de destino
+    //   console.log({
+    //     text: `Pieza ${active.id} movida de ${from} a ${to}`,
+    //     change: `${from}${to}`,
+    //   });
+    //   move(`${from}${to}`); // Mueve la pieza en el backend
+    // }
   };
 
   return (
