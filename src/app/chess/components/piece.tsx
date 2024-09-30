@@ -1,37 +1,42 @@
-"use client"
+"use client";
 
 import Image from "next/image";
-import clsx from "clsx";
-import type * as chess from "chess";
 import { useDraggable } from "@dnd-kit/core";
+import { CSS } from "@dnd-kit/utilities";
+import type * as chess from "chess";
 
-type Props = {
+interface PieceProps {
   piece: chess.Piece;
-};
+}
 
-export const Piece = ({ piece }: Props) => {
+export const Piece: React.FC<PieceProps> = ({ piece }) => {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: `piece-${piece.side.name}-${piece.type}-${crypto.randomUUID()}`,
+    id: `piece-${piece.side.name}-${piece.type}`, // ID único de la pieza
   });
-  const style = transform
+
+  const style: React.CSSProperties = transform
     ? {
-        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-        zIndex: 200
+        transform: CSS.Translate.toString(transform), // Aplicar la transformación de arrastre
       }
-    : undefined;
+    : {};
+
   return (
-    <div className="relative w-full h-full" ref={setNodeRef} style={style} {...listeners} {...attributes}>
+    <div
+      ref={setNodeRef}
+      style={style}
+      className="relative w-full h-full"
+      {...listeners}
+      {...attributes}
+    >
       <Image
-        style={{
-          filter: "drop-shadow(0 0 0.3rem #fff)",
-        }}
-        className={clsx({
-          "hover:cursor-pointer": true,
-        })}
         src={`/pieces/${piece.side.name}/${piece.type}.png`}
         alt={piece.type}
         fill
         sizes="75px"
+        className="hover:cursor-pointer"
+        style={{
+          filter: "drop-shadow(0 0 0.3rem #fff)",
+        }}
       />
     </div>
   );

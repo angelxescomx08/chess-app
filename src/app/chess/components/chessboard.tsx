@@ -1,20 +1,30 @@
 "use client";
 
+import { DndContext, type DragEndEvent } from "@dnd-kit/core";
 import { useStatus } from "../hooks";
 import { Square } from "./square";
-import { DndContext } from "@dnd-kit/core";
+import type * as chess from "chess";
 
 export const ChessBoard = () => {
   const { status, move } = useStatus();
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { over, active } = event;
+
+    if (over) {
+      const from = active.id.split("-")[1]; // Casilla de origen
+      const to = over.id.split("-")[1]; // Casilla de destino
+      move(`${to}`); // Mueve la pieza en el backend
+      console.log(`Pieza ${active.id} movida de ${from} a ${to}`);
+    }
+  };
+
   return (
-    <DndContext>
-      <button onClick={()=>move("e4")}>Click</button>
+    <DndContext onDragEnd={handleDragEnd}>
       <div className="grid w-[600px] max-w-full grid-cols-8">
-        {status
-          .board.squares
-          .map((square, index) => (
-            <Square key={`square-${index}`} square={square} />
-          ))}
+        {status.board.squares.map((square: chess.Square, index: number) => (
+          <Square key={`square-${index}`} square={square} />
+        ))}
       </div>
     </DndContext>
   );
