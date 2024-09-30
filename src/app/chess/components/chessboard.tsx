@@ -31,6 +31,9 @@ export const ChessBoard = () => {
             {
               square.piece&&
                 <Image 
+                  style={{
+                    filter: 'drop-shadow(0 0 0.3rem #fff)',
+                  }}
                   src={`/pieces/${square.piece.side.name}/${square.piece.type}.png`} 
                   alt={square.piece.type}
                   fill
