@@ -18,18 +18,13 @@ export const ChessBoard = () => {
     if (active.id === over?.id) return;
 
     const fromString = from.current;
-    const piece = (active.id as string).split("--")[0];
     const to = over?.id;
 
-    // console.log({
-    //   fromString,
-    //   to,
-    //   piece,
-    // });
-
     if (to) {
-      console.log(`${fromString}-${to}`);
-      move(`e2-e4`);
+      move({
+        fromMove: fromString!,
+        to: to as string,
+      });
     }
   };
 

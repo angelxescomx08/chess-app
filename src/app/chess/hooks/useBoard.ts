@@ -5,8 +5,12 @@ export const useBoard = () => {
   const [board, setBoard] = useState(chess.board());
   const from = useRef<string | null>(null);
 
-  const move = (move: string) => {
-    chess.move(move);
+  const move = ({ fromMove, to }: { fromMove: string; to: string }) => {
+    chess.move({
+      from: fromMove,
+      to,
+    });
+    from.current = null;
     setBoard(chess.board());
   };
 
@@ -15,6 +19,6 @@ export const useBoard = () => {
     setStatus: setBoard,
     gameClient: chess,
     move,
-    from
+    from,
   };
 };
