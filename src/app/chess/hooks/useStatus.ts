@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { gameClient } from "../utils";
 
 export const useStatus = () => {
   const [status, setStatus] = useState(gameClient.getStatus());
+  const from = useRef<string | null>(null);
 
   const move = (move: string) => {
     gameClient.move(move);
@@ -14,5 +15,6 @@ export const useStatus = () => {
     setStatus,
     gameClient,
     move,
+    from
   };
 };

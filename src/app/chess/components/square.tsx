@@ -22,12 +22,14 @@ export const Square: React.FC<SquareProps> = ({ square }) => {
     <div
       ref={setNodeRef}
       style={style}
-      className={clsx("col-span-1 aspect-square", {
+      className={clsx("relative col-span-1 aspect-square", {
         "bg-white text-black": getSquareColor(square) === "light",
         "bg-black": getSquareColor(square) === "dark",
       })}
     >
-      {/* {`${square.file}${square.rank}`} */}
+      <span className="absolute left-1 top-0 font-bold">
+        {`${square.file}${square.rank}`}
+      </span>
       {square.piece && <Piece piece={square.piece} />}
     </div>
   );
