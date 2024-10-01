@@ -15,7 +15,7 @@ export const Square: React.FC<SquareProps> = ({ square }) => {
     id: `${square.file}${square.rank}`,
   });
   const style = {
-    color: isOver ? "green" : undefined,
+    backgroundColor: isOver ? "green" : undefined,
   };
 
   return (
