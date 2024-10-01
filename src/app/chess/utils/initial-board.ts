@@ -1,5 +1,3 @@
-import * as chess from "chess";
+import { Chess } from 'chess.js'
 
-export const gameClient = chess.create({
-  PGN: false
-});
+export const chess = new Chess()

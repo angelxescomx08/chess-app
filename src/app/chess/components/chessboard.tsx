@@ -1,8 +1,8 @@
 "use client";
 
-import { useStatus } from "../hooks";
+import { useBoard } from "../hooks";
+import { getFullBoard } from "../utils";
 import { Square } from "./square";
-import type * as chess from "chess";
 import {
   DndContext,
   type DragOverEvent,
@@ -10,7 +10,7 @@ import {
 } from "@dnd-kit/core";
 
 export const ChessBoard = () => {
-  const { status, move, from } = useStatus();
+  const { board, move, from } = useBoard();
 
   const onDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -39,12 +39,20 @@ export const ChessBoard = () => {
     }
   };
 
+  console.log(getFullBoard(board));
+
   return (
     <DndContext onDragOver={onDragOver} onDragEnd={onDragEnd}>
       <div className="grid w-[600px] max-w-full grid-cols-8">
-        {status.board.squares.map((square: chess.Square) => (
-          <Square key={`${square.file}${square.rank}`} square={square} />
-        ))}
+        {getFullBoard(board)
+          .flat()
+          .map((square) => (
+            <Square
+              key={square.square}
+              square={square.square}
+              piece={square.piece}
+            />
+          ))}
       </div>
     </DndContext>
   );

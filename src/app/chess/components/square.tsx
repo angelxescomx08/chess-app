@@ -3,16 +3,18 @@
 import clsx from "clsx";
 import { getSquareColor } from "../utils";
 import { Piece } from "./piece";
-import type * as chess from "chess";
 import { useDroppable } from "@dnd-kit/core";
+import { type PieceInBoard } from "../interfaces/piece";
+import { type Square as TypeSquare } from "chess.js";
 
 interface SquareProps {
-  square: chess.Square;
+  square: TypeSquare;
+  piece?: PieceInBoard | null;
 }
 
-export const Square: React.FC<SquareProps> = ({ square }) => {
+export const Square: React.FC<SquareProps> = ({ square, piece }) => {
   const { isOver, setNodeRef } = useDroppable({
-    id: `${square.file}${square.rank}`,
+    id: square,
   });
   const style = {
     backgroundColor: isOver ? "green" : undefined,
@@ -27,10 +29,8 @@ export const Square: React.FC<SquareProps> = ({ square }) => {
         "bg-black": getSquareColor(square) === "dark",
       })}
     >
-      <span className="absolute left-1 top-0 font-bold">
-        {`${square.file}${square.rank}`}
-      </span>
-      {square.piece && <Piece piece={square.piece} />}
+      <span className="absolute left-1 top-0 font-bold">{square}</span>
+      {piece && <Piece piece={piece} />}
     </div>
   );
 };

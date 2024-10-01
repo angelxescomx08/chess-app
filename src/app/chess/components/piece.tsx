@@ -1,19 +1,17 @@
 "use client";
 
 import Image from "next/image";
-import type * as chess from "chess";
-import { getCharByPieceType } from "../utils";
 import { useDraggable } from "@dnd-kit/core";
 import { useState } from "react";
+import { type PieceInBoard } from "../interfaces";
+import { getFullPieceName } from "../utils";
 
 interface PieceProps {
-  piece: chess.Piece;
+  piece: PieceInBoard;
 }
 
 export const Piece: React.FC<PieceProps> = ({ piece }) => {
-  const [id] = useState(
-    `${getCharByPieceType(piece.type)}--${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-  );
+  const [id] = useState(`${crypto.randomUUID()}`);
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: id,
   });
@@ -33,7 +31,7 @@ export const Piece: React.FC<PieceProps> = ({ piece }) => {
       {...attributes}
     >
       <Image
-        src={`/pieces/${piece.side.name}/${piece.type}.png`}
+        src={`/pieces/${piece.color}/${getFullPieceName(piece.type)}.png`}
         alt={piece.type}
         fill
         sizes="75px"
