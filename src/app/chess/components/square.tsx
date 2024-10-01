@@ -4,28 +4,31 @@ import clsx from "clsx";
 import { getSquareColor } from "../utils";
 import { Piece } from "./piece";
 import type * as chess from "chess";
-import { Droppable } from "react-beautiful-dnd";
+import { useDroppable } from "@dnd-kit/core";
 
 interface SquareProps {
   square: chess.Square;
 }
 
 export const Square: React.FC<SquareProps> = ({ square }) => {
+  const { isOver, setNodeRef } = useDroppable({
+    id: `${square.file}${square.rank}`,
+  });
+  const style = {
+    color: isOver ? "green" : undefined,
+  };
+
   return (
-    <Droppable droppableId={`${square.file}${square.rank}`}>
-      {(provided) => (
-        <div
-          ref={provided.innerRef}
-          {...provided.droppableProps}
-          className={clsx("col-span-1 aspect-square", {
-            "bg-white text-black": getSquareColor(square) === "light",
-            "bg-black": getSquareColor(square) === "dark",
-          })}
-        >
-          {/* {`${square.file}${square.rank}`} */}
-          {square.piece && <Piece piece={square.piece} />}
-        </div>
-      )}
-    </Droppable>
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={clsx("col-span-1 aspect-square", {
+        "bg-white text-black": getSquareColor(square) === "light",
+        "bg-black": getSquareColor(square) === "dark",
+      })}
+    >
+      {/* {`${square.file}${square.rank}`} */}
+      {square.piece && <Piece piece={square.piece} />}
+    </div>
   );
 };
