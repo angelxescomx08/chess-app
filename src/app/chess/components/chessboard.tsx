@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import { useBoard } from "../hooks";
 import { getFullBoard } from "../utils";
 import { Square } from "./square";
@@ -10,6 +11,7 @@ import {
 } from "@dnd-kit/core";
 
 export const ChessBoard = () => {
+  const id = useId()
   const { board, move, from } = useBoard();
 
   const onDragEnd = (event: DragEndEvent) => {
@@ -41,7 +43,10 @@ export const ChessBoard = () => {
   // console.log(getFullBoard(board));
 
   return (
-    <DndContext onDragOver={onDragOver} onDragEnd={onDragEnd}>
+    <DndContext 
+      id={id}
+      onDragOver={onDragOver} 
+      onDragEnd={onDragEnd}>
       <div className="grid w-[600px] max-w-full grid-cols-8">
         {getFullBoard(board)
           .flat()
