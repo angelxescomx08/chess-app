@@ -6,12 +6,17 @@ export const useBoard = () => {
   const from = useRef<string | null>(null);
 
   const move = ({ fromMove, to }: { fromMove: string; to: string }) => {
-    chess.move({
-      from: fromMove,
-      to,
-    });
-    from.current = null;
-    setBoard(chess.board());
+    try {
+      chess.move({
+        from: fromMove,
+        to,
+      });
+      from.current = null;
+      setBoard(chess.board());
+    } catch (e) {
+      alert(e);
+      from.current = null;
+    }
   };
 
   return {

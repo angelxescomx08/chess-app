@@ -17,22 +17,18 @@ export const ChessBoard = () => {
   let socket: Socket | null = null;
 
   const onDragEnd = (event: DragEndEvent) => {
-    try {
-      const { active, over } = event;
+    const { active, over } = event;
 
-      if (active.id === over?.id) return;
+    if (active.id === over?.id) return;
 
-      const fromString = from.current;
-      const to = over?.id;
+    const fromString = from.current;
+    const to = over?.id;
 
-      if (to) {
-        move({
-          fromMove: fromString!,
-          to: to as string,
-        });
-      }
-    } catch (error) {
-      alert("Movimiento inválido");
+    if (to) {
+      move({
+        fromMove: fromString!,
+        to: to as string,
+      });
     }
   };
 
