@@ -1,6 +1,6 @@
 "use client";
 
-import { useId } from "react";
+import { useEffect, useId } from "react";
 import { useBoard } from "../hooks";
 import { getFullBoard } from "../utils";
 import { Square } from "./square";
@@ -9,10 +9,12 @@ import {
   type DragOverEvent,
   type DragEndEvent,
 } from "@dnd-kit/core";
+import { io, type Socket } from "socket.io-client";
 
 export const ChessBoard = () => {
-  const id = useId()
+  const id = useId();
   const { board, move, from } = useBoard();
+  let socket: Socket | null = null;
 
   const onDragEnd = (event: DragEndEvent) => {
     try {
@@ -40,13 +42,28 @@ export const ChessBoard = () => {
     }
   };
 
-  // console.log(getFullBoard(board));
+  const handleSocket = async () => {
+    socket = io();
+
+    socket.on("connect", () => {
+      console.log("Connected to server");
+    });
+
+    socket.on("message", (msg: string) => {
+      console.log("Message from server:", msg);
+    });
+  };
+
+  useEffect(() => {
+    void handleSocket();
+
+    return () => {
+      socket?.disconnect();
+    };
+  }, []);
 
   return (
-    <DndContext 
-      id={id}
-      onDragOver={onDragOver} 
-      onDragEnd={onDragEnd}>
+    <DndContext id={id} onDragOver={onDragOver} onDragEnd={onDragEnd}>
       <div className="grid w-[600px] max-w-full grid-cols-8">
         {getFullBoard(board)
           .flat()
