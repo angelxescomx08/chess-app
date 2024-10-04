@@ -13,18 +13,22 @@ export const ChessBoard = () => {
   const { board, move, from } = useBoard();
 
   const onDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
+    try {
+      const { active, over } = event;
 
-    if (active.id === over?.id) return;
+      if (active.id === over?.id) return;
 
-    const fromString = from.current;
-    const to = over?.id;
+      const fromString = from.current;
+      const to = over?.id;
 
-    if (to) {
-      move({
-        fromMove: fromString!,
-        to: to as string,
-      });
+      if (to) {
+        move({
+          fromMove: fromString!,
+          to: to as string,
+        });
+      }
+    } catch (error) {
+      alert("Movimiento inválido");
     }
   };
 
@@ -34,7 +38,7 @@ export const ChessBoard = () => {
     }
   };
 
-  console.log(getFullBoard(board));
+  // console.log(getFullBoard(board));
 
   return (
     <DndContext onDragOver={onDragOver} onDragEnd={onDragEnd}>
