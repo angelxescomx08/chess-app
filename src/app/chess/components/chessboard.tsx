@@ -25,11 +25,12 @@ export const ChessBoard = () => {
     const to = over?.id;
 
     if (to) {
-      move({
-        fromMove: fromString!,
-        to: to as string,
-      });
+      // move({
+      //   fromMove: fromString!,
+      //   to: to as string,
+      // });
     }
+    socket?.emit("message", { from: fromString, to });
   };
 
   const onDragOver = (event: DragOverEvent) => {

@@ -1,6 +1,6 @@
 import { createServer } from "node:http";
 import next from "next";
-import { Server } from "socket.io";
+import { type DefaultEventsMap, Server, type Socket } from "socket.io";
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname = "localhost";
@@ -9,7 +9,12 @@ const port = 3000;
 const app = next({ dev, hostname, port });
 const handler = app.getRequestHandler();
 
-// const sockets = []
+const sockets: Socket<
+  DefaultEventsMap,
+  DefaultEventsMap,
+  DefaultEventsMap,
+  unknown
+>[] = [];
 
 await app.prepare().then(() => {
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -17,19 +22,29 @@ await app.prepare().then(() => {
 
   const io = new Server(httpServer);
 
-  io.on("connection", (socket) => {
-    console.log("a user connected");
-    // sockets.push(socket);
-    // console.log(sockets);
-    socket.on("message", (data) => {
-      console.log(data);
-      io.emit("message", data);
-    });
+  io.on(
+    "connection",
+    (
+      socket: Socket<
+        DefaultEventsMap,
+        DefaultEventsMap,
+        DefaultEventsMap,
+        unknown
+      >,
+    ) => {
+      console.log("a user connected");
+      sockets.push(socket);
+      console.log(sockets);
+      socket.on("message", (data) => {
+        console.log({ data });
+        io.emit("message", data);
+      });
 
-    socket.on("disconnect", () => {
-      console.log("user disconnected");
-    });
-  });
+      socket.on("disconnect", () => {
+        console.log("user disconnected");
+      });
+    },
+  );
 
   httpServer
     .once("error", (err) => {
