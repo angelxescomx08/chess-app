@@ -9,6 +9,8 @@ const port = 3000;
 const app = next({ dev, hostname, port });
 const handler = app.getRequestHandler();
 
+// const sockets = []
+
 await app.prepare().then(() => {
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   const httpServer = createServer(handler);
@@ -17,7 +19,8 @@ await app.prepare().then(() => {
 
   io.on("connection", (socket) => {
     console.log("a user connected");
-
+    // sockets.push(socket);
+    // console.log(sockets);
     socket.on("message", (data) => {
       console.log(data);
       io.emit("message", data);
