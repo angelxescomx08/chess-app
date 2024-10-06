@@ -34,7 +34,6 @@ await app.prepare().then(() => {
     ) => {
       console.log("a user connected");
       sockets.push(socket);
-      console.log(sockets);
       socket.on("message", (data) => {
         console.log({ data });
         io.emit("message", data);
