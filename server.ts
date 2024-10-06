@@ -1,7 +1,7 @@
 import { createServer } from "node:http";
 import next from "next";
 import { Server } from "socket.io";
-import { addSocket, removeSocket, type CustomSocket } from "~/app/sockets";
+import { coupleSockets, removeSocket, type CustomSocket } from "~/app/sockets";
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname = "localhost";
@@ -18,7 +18,7 @@ await app.prepare().then(() => {
 
   io.on("connection", (socket: CustomSocket) => {
     console.log("a user connected");
-    addSocket(socket);
+    coupleSockets(socket);
     socket.on("message", (data) => {
       io.emit("message", data);
     });
