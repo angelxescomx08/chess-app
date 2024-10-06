@@ -1,3 +1,4 @@
+import { type CustomIO } from "../interfaces/custom-io";
 import { type CustomSocket } from "../interfaces/custom-socket";
 
 export const sockets: CustomSocket[] = [];
@@ -17,12 +18,13 @@ export function removeSocket(socket: CustomSocket) {
   }
 }
 
-export function coupleSockets(socket: CustomSocket) {
-  if (sockets.length > 1) {
+export function coupleSockets(io: CustomIO, socket: CustomSocket) {
+  console.log(sockets.map((s) => s.id));
+  if (sockets.length > 0) {
     const firstSocket = popFistSocket();
     if (firstSocket) {
-      firstSocket.emit("couple", socket.id);
-      socket.emit("couple", firstSocket.id);
+      io.to(firstSocket.id).emit("couple", firstSocket.id);
+      io.to(socket.id).emit("couple", socket.id);
     }
     return;
   }

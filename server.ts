@@ -18,7 +18,7 @@ await app.prepare().then(() => {
 
   io.on("connection", (socket: CustomSocket) => {
     console.log("a user connected");
-    coupleSockets(socket);
+    coupleSockets(io, socket);
     socket.on("message", (data) => {
       io.emit("message", data);
     });

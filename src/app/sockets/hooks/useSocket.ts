@@ -13,6 +13,10 @@ const handleSocket = async () => {
   socket.on("message", (msg: string) => {
     console.log("Message from server:", msg);
   });
+
+  socket.on("couple", (data) => {
+    console.log(data);
+  });
 };
 
 export const useSocket = () => {
