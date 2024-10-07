@@ -1,3 +1,4 @@
+import { assignColorToCouple } from "~/app/chess";
 import { type CustomIO } from "../interfaces/custom-io";
 import { type CustomSocket } from "../interfaces/custom-socket";
 
@@ -19,12 +20,22 @@ export function removeSocket(socket: CustomSocket) {
 }
 
 export function coupleSockets(io: CustomIO, socket: CustomSocket) {
-  console.log(sockets.map((s) => s.id));
   if (sockets.length > 0) {
     const firstSocket = popFistSocket();
     if (firstSocket) {
-      io.to(firstSocket.id).emit("couple", firstSocket.id);
-      io.to(socket.id).emit("couple", socket.id);
+      const [color1, color2] = assignColorToCouple();
+      io.to(firstSocket.id).emit("couple", {
+        id: firstSocket.id,
+        color: color1,
+        oponentId: socket.id,
+        oponentColor: color2,
+      });
+      io.to(socket.id).emit("couple", {
+        id: socket.id,
+        color: color2,
+        oponentId: firstSocket.id,
+        oponentColor: color1,
+      });
     }
     return;
   }
