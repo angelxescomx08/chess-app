@@ -10,12 +10,24 @@ import {
   type DragEndEvent,
 } from "@dnd-kit/core";
 import { useSocket } from "~/app/sockets";
+import { usePlayer } from "~/app/player";
 
 export const ChessBoard = () => {
   const id = useId();
   const { board, move, from } = useBoard();
-  const { socket } = useSocket();
-  
+  const { player, setPlayer } = usePlayer();
+  const { socket } = useSocket({
+    onCouple: (player) => {
+      setPlayer(player);
+    },
+    onMessage: (msg) => {
+      const { from, to } = msg as { from: string; to: string };
+      move({
+        fromMove: from,
+        to: to,
+      });
+    },
+  });
 
   const onDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -26,12 +38,12 @@ export const ChessBoard = () => {
     const to = over?.id;
 
     if (to) {
-      // move({
-      //   fromMove: fromString!,
-      //   to: to as string,
-      // });
+      move({
+        fromMove: fromString!,
+        to: to as string,
+      });
+      socket?.emit("message", { from: fromString, to });
     }
-    socket?.emit("message", { from: fromString, to });
   };
 
   const onDragOver = (event: DragOverEvent) => {

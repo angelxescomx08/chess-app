@@ -21,6 +21,7 @@ await app.prepare().then(() => {
     coupleSockets(io, socket);
     socket.on("message", (data) => {
       io.emit("message", data);
+      console.log(data);
     });
 
     socket.on("disconnect", () => {
